@@ -1,7 +1,12 @@
-from agents import Agent, Runner, RunContextWrapper, OpenAIChatCompletionsModel, RunConfig
+from agents import Agent, Runner, RunContextWrapper, OpenAIChatCompletionsModel, RunConfig, SQLiteSession
+
 from openai import AsyncOpenAI
 import os
 from dotenv import load_dotenv
+
+
+#LLM IS A STATELESS
+
 
 load_dotenv() 
 
@@ -23,23 +28,25 @@ config = RunConfig(
 
 
 
-def dynamic_instruction (ctx:RunContextWrapper , agent:Agent):
-    return "you are a helpful assistant"
 
 assistant = Agent(
     name= "assistant agent",
-    instructions=dynamic_instruction)
+    instructions="you are a helpful assistant"
+    
+    )
 
 while True:     
     prompt=input("Write promt here:  ")
     
-    if prompt == "exit":
+    if prompt == "e":
         break
 
     result = Runner.run_sync(
         starting_agent=assistant,
         input = prompt,
-        run_config=config
+        run_config=config,
+        
+        
 
     )
 
